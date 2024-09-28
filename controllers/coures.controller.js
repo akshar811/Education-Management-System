@@ -65,7 +65,7 @@ const selfEnroll = async (req, res) => {
 //   student submit assignment
 const submitAssignment = async (req, res) => {
   try {
-    const { courseId, fileUrl } = req.body;
+    const { courseId, title , description , dueDate  } = req.body;
     const course = await Course.findById(courseId);
 
     // Check if the student is enrolled in the course
@@ -77,8 +77,13 @@ const submitAssignment = async (req, res) => {
     const assignment = new Assignment({
       student: req.body.enrolledStudents,
       course: courseId,
-      fileUrl,
+      title,
+      description,
+      dueDate
     });
+
+      course.assignments.push(assignment._id);
+      await course.save();
 
     await assignment.save();
     res
@@ -88,6 +93,8 @@ const submitAssignment = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
 
 // admin can enroll student from course
 const enrollStudent = async (req, res) => {
