@@ -6,7 +6,7 @@ const {
 } = require("../controllers/quize.controller");
 const quizeRouete = Router();
 
-quizeRouete.post("/upload-assignment", Auth, Teacher, uploadAssignment);
+quizeRouete.post("/upload-assignment", Teacher, uploadAssignment);
 quizeRouete.post("/create-quiz", Auth, Teacher, createQuiz);
 
 module.exports = quizeRouete;
