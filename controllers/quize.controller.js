@@ -5,17 +5,17 @@ const Quiz = require("../models/Quizemodel");
 // Teacher: Update course assignments
 const uploadAssignment = async (req, res) => {
   try {
-    const { courseId, assignmentTitle, assignmentDescription, fileUrl } =
-      req.body;
+    const { title, description, courseId, dueDate } = req.body;
     const course = await Course.findById(courseId);
 
-   
-    // Create and add new assignment to the course
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
     const assignment = new Assignment({
+      title,
+      description,
       course: courseId,
-      title: assignmentTitle,
-      description: assignmentDescription,
-      fileUrl,
+      dueDate,
     });
 
     await assignment.save();
@@ -23,9 +23,7 @@ const uploadAssignment = async (req, res) => {
     course.assignments.push(assignment._id);
     await course.save();
 
-    res
-      .status(201)
-      .json({ message: "Assignment uploaded successfully", assignment });
+    res.status(201).json({ message: 'Assignment created', assignment });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
