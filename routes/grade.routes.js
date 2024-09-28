@@ -8,8 +8,9 @@ const {
 
 const gradeRoute = Router();
 
-gradeRoute.post("/", Auth, Teacher, assignGrade);
-gradeRoute.get("/", Auth, student, getGrades);
+gradeRoute.post("/assign", Auth, Teacher, assignGrade);
+gradeRoute.get("/:courseId", Auth, student, getGrades);
+
 gradeRoute.get("/Analytics/:courseId", Auth, authorize, getCourseAnalytics);
 
 module.exports = gradeRoute;
